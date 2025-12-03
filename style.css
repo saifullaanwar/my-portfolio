@@ -1,0 +1,130 @@
+/* Styling Umum */
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap');
+
+body {
+    background-color: #282c34; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    font-family: 'Fira Code', monospace; 
+    font-size: 15px;
+    transition: background-color 0.3s; 
+}
+
+/* Sembunyikan input fisik */
+#terminal-input {
+    opacity: 0;
+    position: fixed;
+    top: -100px;
+}
+
+.terminal-container {
+    width: 90%;
+    max-width: 800px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); 
+}
+
+/* --- HEADER AND DOTS --- */
+.terminal-header {
+    background-color: #3b4251; 
+    padding: 8px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; 
+}
+.header-dots {
+    display: flex;
+    align-items: center;
+}
+.dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 8px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+.red { background-color: #ff5f56; }
+.yellow { background-color: #ffbd2e; }
+.green { background-color: #27c93f; }
+
+.title {
+    color: #c9d1d9;
+    font-size: 14px;
+    font-weight: bold;
+    margin-left: 20px; 
+    margin-right: auto;
+}
+
+/* Elemen Tombol Minimalis (Target Tombol Toggle) */
+.minimal-toggle {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #3b4251; 
+    transition: all 0.3s ease;
+}
+
+/* --- KONTEN TERMINAL UTAMA --- */
+.terminal-content {
+    padding: 25px;
+    margin: 0;
+    min-height: 400px;
+    overflow-y: auto; /* Memungkinkan scrolling saat konten banyak */
+}
+
+/* Memastikan konten statis dan output interaktif tetap rapi */
+.static-content, .command-output {
+    white-space: pre-wrap; /* Penting untuk menjaga format teks dan spasi */
+    line-height: 1.6; /* Jarak antar baris */
+    margin: 0;
+}
+
+/* Baris Prompt Baru */
+.prompt-line {
+    display: flex;
+    white-space: pre; 
+    line-height: 1.6;
+}
+
+/* --- CURSOR (Semua mode) --- */
+.cursor {
+    font-weight: bold;
+    animation: blink 1s step-end infinite;
+}
+@keyframes blink {
+    from, to { border-right-color: transparent }
+    50% { border-right-color: inherit; } 
+}
+
+
+/* --- WARNA DAN TEMA (DARK MODE - Default) --- */
+.dark-mode .terminal-content {
+    background-color: #20242b; 
+    color: #c9d1d9; 
+}
+.dark-mode .prompt { color: #8be9fd; }
+.dark-mode .welcome-message { color: #f1fa8c; }
+.dark-mode .section-title { color: #ff79c6; }
+.dark-mode .tech-category { color: #50fa7b; }
+.dark-mode .highlight { color: #ff9d00; }
+.dark-mode .minimal-toggle { background-color: #ff9d00; } /* ORANGE */
+.dark-mode .cursor { border-right: 2px solid #fff; }
+
+/* --- WARNA DAN TEMA (LIGHT MODE) --- */
+.light-mode { background-color: #f0f0f0; } 
+.light-mode .terminal-content {
+    background-color: #ffffff; 
+    color: #333333; 
+}
+.light-mode .prompt { color: #007bff; }
+.light-mode .welcome-message { color: #28a745; }
+.light-mode .section-title { color: #dc3545; }
+.light-mode .tech-category { color: #17a2b8; }
+.light-mode .highlight { color: #6f42c1; }
+.light-mode .minimal-toggle { background-color: #333333; } /* DARK GRAY/BLACK */
+.light-mode .cursor { border-right: 2px solid #333; }

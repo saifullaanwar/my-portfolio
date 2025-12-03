@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saiful Anwar - Interactive Terminal</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body class="dark-mode" onclick="document.getElementById('terminal-input').focus()">
+    <div class="terminal-container">
+        <div class="terminal-header">
+            <div class="header-dots">
+                <div class="dot red"></div>
+                <div class="dot yellow"></div>
+                <div class="dot green"></div>
+            </div>
+            <div class="title">/user/saifullanwar:~$</div> 
+            <div id="mode-toggle" class="minimal-toggle" onclick="event.stopPropagation(); toggleMode();"></div>
+        </div>
+
+        <div id="terminal-output" class="terminal-content">
+            <pre class="static-content">
+<span class="prompt">/user/saifullanwar:~$</span>
+
+/Last login: 12/3/2025, 8:30:22 PM WIB on ttys002
+
+<span class="welcome-message">Welcome, fellow explorer 🌎.</span>
+
+From analyzing the deep layers of the Earth to architecting the full stack of the digital realm, my career trajectory is defined by a singular passion: <span class="highlight">complex problem-solving</span>. I am a Full-Stack developer trained in data interpretation—skills that accelerate my transition. I am actively executing a career switch, embracing the challenge of building the most robust development.
+
+I am a Geological Engineering graduate, trained in logic and system complications. I embrace the task of building intuitive, efficient, and well-designed applications from the data layer to the user interface.
+
+<span class="section-title">MY DIGITAL CORE STACK:</span>
+* <span class="tech-category">Backend Foundation:</span>
+    Mastery in <span class="highlight">Python</span>, <span class="highlight">Node.js</span>, and <span class="highlight">PHP</span>.
+    Expertise in designing resilient <span class="highlight">REST API</span> architectures using the <span class="highlight">Express.js</span> framework.
+    I integrate <span class="highlight">Prisma ORM</span> for effiable and scalable database access and data integrity using <span class="highlight">MySQL</span>.
+
+<span class="section-title">FRONTEND MASTERY:</span>
+* <span class="tech-category">State & System Layer:</span>
+    Mastery of <span class="tech-category">State Management</span> for efficient data handling in <span class="highlight">React</span>.
+    Expertise with <span class="highlight">JavaScript</span> and analyzing APIs for seeking server-side flaws using <span class="highlight">Vite</span>.
+    Leveraging the strong HTTP client <span class="highlight">Axios</span>, I apply UI/UX principles to guarantee a superior user experience.
+
+Whether mapping geological faults or debugging the same: uncovering structure in every project. I am ready to begin.
+Type 'help' for available commands.
+</pre>
+            <div class="prompt-line">
+                <span class="prompt">/user/saifullanwar:~$</span> 
+                <span id="current-command"></span>
+                <span class="cursor">_</span>
+            </div>
+        </div>
+
+        <input type="text" id="terminal-input" autofocus>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
