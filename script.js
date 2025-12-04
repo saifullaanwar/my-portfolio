@@ -82,6 +82,37 @@ const commands = {
     'whatsapp': 'Chat with me: <a href="http://wa.me/628988185285" target="_blank" class="highlight">wa.me/628988185285</a>', 
 };
 
+// ==========================================================
+// PERBAIKAN SCROLL MOBILE: MENCEGAH SCROLL OTOMATIS BROWSER
+// ==========================================================
+
+// 1. Mencegah browser scroll ketika input mendapatkan fokus di mobile
+inputField.addEventListener('focus', function(e) {
+    // Scroll ke baris prompt terbaru
+    const lastPromptLine = document.querySelector('.prompt-line:last-child');
+    if (lastPromptLine) {
+        // Scroll container terminal (terminal-output), bukan window body
+        lastPromptLine.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    }
+
+    // Solusi spesifik untuk mencegah browser menggulir ke atas
+    setTimeout(() => {
+        // Gulir kembali ke akhir output setelah keyboard muncul (jeda singkat)
+        output.scrollTop = output.scrollHeight;
+    }, 50); // Jeda 50ms untuk memberi waktu keyboard muncul
+
+    // Memastikan fokus tetap pada input field
+    e.preventDefault(); 
+});
+
+// 2. Mencegah scroll pada saat tap di body terminal
+output.addEventListener('touchstart', function(e) {
+    // Mencegah default touch behavior yang mungkin memicu scroll
+    e.stopPropagation(); 
+});
+
+// ==========================================================
+
 inputField.addEventListener('input', (e) => {
     if (currentCommandSpan) {
         currentCommandSpan.textContent = e.target.value;
@@ -95,7 +126,7 @@ inputField.addEventListener('keydown', (e) => {
         inputField.value = ''; 
         e.preventDefault(); 
     }
-    document.getElementById('terminal-input').focus(); 
+    // Tidak perlu memfokuskan lagi di keydown karena handleCommand sudah memanggilnya
 });
 
 function handleCommand(command) {
@@ -131,8 +162,7 @@ function handleCommand(command) {
     const newPromptLine = createPromptLine();
     output.appendChild(newPromptLine);
 
-    // 5. LOGIKA AUTO-SCROLL YANG DIREVISI (Lebih Andal)
-    // Gunakan scrollIntoView() pada baris prompt yang baru dibuat
+    // 5. LOGIKA AUTO-SCROLL (Di sini kita memastikan scroll ke bawah)
     newPromptLine.scrollIntoView({ behavior: 'smooth', block: 'end' });
     
     inputField.focus(); 
