@@ -24,7 +24,6 @@ document.body.addEventListener('click', function attemptPlay() {
             hasAudioStarted = true;
             document.body.removeEventListener('click', attemptPlay);
         }).catch(error => {
-            // Biarkan event listener tetap ada.
         });
     }
 });
@@ -82,42 +81,40 @@ const commands = {
     'whatsapp': 'Chat with me: <a href="http://wa.me/628988185285" target="_blank" class="highlight">wa.me/628988185285</a>', 
 };
 
-// ==========================================================
-// PERBAIKAN SCROLL MOBILE: MENCEGAH SCROLL OTOMATIS BROWSER
-// ==========================================================
-
-// 1. Mencegah browser scroll ketika input mendapatkan fokus di mobile
-inputField.addEventListener('focus', function(e) {
-    // Scroll ke baris prompt terbaru
-    const lastPromptLine = document.querySelector('.prompt-line:last-child');
-    if (lastPromptLine) {
-        // Scroll container terminal (terminal-output), bukan window body
-        lastPromptLine.scrollIntoView({ behavior: 'smooth', block: 'end' });
-    }
-
-    // Solusi spesifik untuk mencegah browser menggulir ke atas
-    setTimeout(() => {
-        // Gulir kembali ke akhir output setelah keyboard muncul (jeda singkat)
-        output.scrollTop = output.scrollHeight;
-    }, 50); // Jeda 50ms untuk memberi waktu keyboard muncul
-
-    // Memastikan fokus tetap pada input field
-    e.preventDefault(); 
-});
-
-// 2. Mencegah scroll pada saat tap di body terminal
-output.addEventListener('touchstart', function(e) {
-    // Mencegah default touch behavior yang mungkin memicu scroll
-    e.stopPropagation(); 
-});
 
 // ==========================================================
+// PERBAIKAN SCROLL MOBILE V5: SCROLL HANYA DENGAN JAVASCRIPT
+// ==========================================================
 
+// 1. Memaksa scroll di setiap input (setiap huruf diketik)
 inputField.addEventListener('input', (e) => {
     if (currentCommandSpan) {
         currentCommandSpan.textContent = e.target.value;
     }
+    // Tambahkan pemaksaan scroll di setiap ketikan untuk melawan auto-scroll browser mobile
+    output.scrollTop = output.scrollHeight; 
 });
+
+// 2. Mengubah body click listener untuk memfokuskan input dan memaksa scroll
+document.body.addEventListener('click', function() {
+    inputField.focus();
+    // Tambahkan pemaksaan scroll di setiap klik
+    output.scrollTop = output.scrollHeight;
+});
+
+// 3. Mengatasi fokus/keyboard yang memicu scroll tak terduga
+inputField.addEventListener('focus', function(e) {
+    // Selalu pastikan terminal berada di bagian paling bawah
+    output.scrollTop = output.scrollHeight;
+    
+    // Gulir kembali setelah jeda singkat (mengantisipasi munculnya keyboard)
+    setTimeout(() => {
+        output.scrollTop = output.scrollHeight;
+    }, 100); 
+});
+
+// ==========================================================
+
 
 inputField.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
@@ -126,7 +123,6 @@ inputField.addEventListener('keydown', (e) => {
         inputField.value = ''; 
         e.preventDefault(); 
     }
-    // Tidak perlu memfokuskan lagi di keydown karena handleCommand sudah memanggilnya
 });
 
 function handleCommand(command) {
@@ -162,8 +158,8 @@ function handleCommand(command) {
     const newPromptLine = createPromptLine();
     output.appendChild(newPromptLine);
 
-    // 5. LOGIKA AUTO-SCROLL (Di sini kita memastikan scroll ke bawah)
-    newPromptLine.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    // 5. LOGIKA AUTO-SCROLL saat ENTER
+    newPromptLine.scrollIntoView({ behavior: 'auto', block: 'end' });
     
     inputField.focus(); 
 }

@@ -6,11 +6,18 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    
+    /* === FIX: FULL HEIGHT DESKTOP (Mentok Atas-Bawah) === */
+    height: 100vh; 
     min-height: 100vh;
+    
     margin: 0;
     font-family: 'Fira Code', monospace; 
     font-size: 15px;
     transition: background-color 0.3s; 
+    
+    /* Fix Mobile Scroll */
+    width: 100%;
 }
 
 /* Sembunyikan input fisik */
@@ -23,6 +30,12 @@ body {
 .terminal-container {
     width: 90%;
     max-width: 800px;
+    
+    /* FIX: Mengambil hampir semua tinggi viewport */
+    height: 98vh; 
+    
+    display: flex;
+    flex-direction: column;
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); 
@@ -35,6 +48,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between; 
+    flex-shrink: 0;
 }
 .header-dots {
     display: flex;
@@ -67,7 +81,7 @@ body {
 .control-button {
     background: none;
     border: none;
-    color: #c9d1d9; /* Warna teks gelap */
+    color: #c9d1d9;
     cursor: pointer;
     font-size: 16px;
     margin-right: 10px;
@@ -82,15 +96,15 @@ body {
     cursor: pointer;
     border: 2px solid #3b4251; 
     transition: all 0.3s ease;
-    margin-left: 5px; /* Sedikit jarak dari tombol musik */
+    margin-left: 5px;
 }
 
 /* --- KONTEN TERMINAL UTAMA --- */
 .terminal-content {
     padding: 25px;
     margin: 0;
-    min-height: 400px;
-    overflow-y: auto; 
+    flex-grow: 1; 
+    overflow-y: auto;
 }
 
 /* Memastikan konten statis dan output interaktif tetap rapi */
@@ -107,9 +121,9 @@ body {
     line-height: 1.6;
 }
 
-/* --- KURSOR BERGERAK: MENGGUNAKAN PSEUDO-ELEMENT --- */
+/* --- KURSOR BERGERAK: MENGGUNAN PSEUDO-ELEMENT --- */
 .typing-cursor::after {
-    content: '_'; /* Teks kursor */
+    content: '_'; 
     font-weight: bold;
     animation: blink 1s step-end infinite;
 }
@@ -132,7 +146,7 @@ body {
 .dark-mode .tech-category { color: #50fa7b; }
 .dark-mode .highlight { color: #ff9d00; }
 .dark-mode .minimal-toggle { background-color: #ff9d00; } 
-.dark-mode .control-button { color: #c9d1d9; } /* Pastikan tombol kontrol gelap */
+.dark-mode .control-button { color: #c9d1d9; } 
 
 
 /* --- WARNA DAN TEMA (LIGHT MODE) --- */
@@ -149,4 +163,23 @@ body {
 .light-mode .tech-category { color: #17a2b8; }
 .light-mode .highlight { color: #6f42c1; }
 .light-mode .minimal-toggle { background-color: #333333; } 
-.light-mode .control-button { color: #333333; } /* Pastikan tombol kontrol cerah */
+.light-mode .control-button { color: #333333; } 
+
+
+/* === ESTETIKA: CUSTOM SCROLLBAR (Webkit) === */
+.terminal-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.terminal-content::-webkit-scrollbar-track {
+    background: #20242b;
+}
+
+.terminal-content::-webkit-scrollbar-thumb {
+    background: #6272a4; 
+    border-radius: 10px;
+}
+
+.terminal-content::-webkit-scrollbar-thumb:hover {
+    background: #bd93f9; 
+}
