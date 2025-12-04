@@ -59,6 +59,21 @@ body {
     margin-right: auto;
 }
 
+.header-controls {
+    display: flex;
+    align-items: center;
+}
+
+.control-button {
+    background: none;
+    border: none;
+    color: #c9d1d9; /* Warna teks gelap */
+    cursor: pointer;
+    font-size: 16px;
+    margin-right: 10px;
+    padding: 0;
+}
+
 /* Elemen Tombol Minimalis (Target Tombol Toggle) */
 .minimal-toggle {
     width: 20px;
@@ -67,6 +82,7 @@ body {
     cursor: pointer;
     border: 2px solid #3b4251; 
     transition: all 0.3s ease;
+    margin-left: 5px; /* Sedikit jarak dari tombol musik */
 }
 
 /* --- KONTEN TERMINAL UTAMA --- */
@@ -74,13 +90,13 @@ body {
     padding: 25px;
     margin: 0;
     min-height: 400px;
-    overflow-y: auto; /* Memungkinkan scrolling saat konten banyak */
+    overflow-y: auto; 
 }
 
 /* Memastikan konten statis dan output interaktif tetap rapi */
 .static-content, .command-output {
-    white-space: pre-wrap; /* Penting untuk menjaga format teks dan spasi */
-    line-height: 1.6; /* Jarak antar baris */
+    white-space: pre-wrap; 
+    line-height: 1.6; 
     margin: 0;
 }
 
@@ -91,14 +107,17 @@ body {
     line-height: 1.6;
 }
 
-/* --- CURSOR (Semua mode) --- */
-.cursor {
+/* --- KURSOR BERGERAK: MENGGUNAKAN PSEUDO-ELEMENT --- */
+.typing-cursor::after {
+    content: '_'; /* Teks kursor */
     font-weight: bold;
     animation: blink 1s step-end infinite;
 }
+
+/* Animasi kursor */
 @keyframes blink {
-    from, to { border-right-color: transparent }
-    50% { border-right-color: inherit; } 
+    from, to { opacity: 0 }
+    50% { opacity: 1; } 
 }
 
 
@@ -112,8 +131,9 @@ body {
 .dark-mode .section-title { color: #ff79c6; }
 .dark-mode .tech-category { color: #50fa7b; }
 .dark-mode .highlight { color: #ff9d00; }
-.dark-mode .minimal-toggle { background-color: #ff9d00; } /* ORANGE */
-.dark-mode .cursor { border-right: 2px solid #fff; }
+.dark-mode .minimal-toggle { background-color: #ff9d00; } 
+.dark-mode .control-button { color: #c9d1d9; } /* Pastikan tombol kontrol gelap */
+
 
 /* --- WARNA DAN TEMA (LIGHT MODE) --- */
 .light-mode { background-color: #f0f0f0; } 
@@ -121,10 +141,12 @@ body {
     background-color: #ffffff; 
     color: #333333; 
 }
+.light-mode .terminal-header { background-color: #e0e0e0; } 
+.light-mode .title { color: #333333; } 
 .light-mode .prompt { color: #007bff; }
 .light-mode .welcome-message { color: #28a745; }
 .light-mode .section-title { color: #dc3545; }
 .light-mode .tech-category { color: #17a2b8; }
 .light-mode .highlight { color: #6f42c1; }
-.light-mode .minimal-toggle { background-color: #333333; } /* DARK GRAY/BLACK */
-.light-mode .cursor { border-right: 2px solid #333; }
+.light-mode .minimal-toggle { background-color: #333333; } 
+.light-mode .control-button { color: #333333; } /* Pastikan tombol kontrol cerah */

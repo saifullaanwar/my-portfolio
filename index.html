@@ -15,15 +15,20 @@
                 <div class="dot yellow"></div>
                 <div class="dot green"></div>
             </div>
-            <div class="title">/user/saifullanwar:~$</div> 
-            <div id="mode-toggle" class="minimal-toggle" onclick="event.stopPropagation(); toggleMode();"></div>
+            <div class="title">/user/saifullanwar</div> 
+            
+            <div class="header-controls">
+                <button id="music-toggle" class="control-button" title="Toggle Music">🔈</button>
+                <div id="mode-toggle" class="minimal-toggle" onclick="event.stopPropagation(); toggleMode();"></div>
+            </div>
+            
         </div>
 
         <div id="terminal-output" class="terminal-content">
             <pre class="static-content">
 <span class="prompt">/user/saifullanwar:~$</span>
 
-/Last login: 12/3/2025, 8:30:22 PM WIB on ttys002
+/Last edit: 4/12/2025, 8:30:22 PM WIB by saifullanwar
 
 <span class="welcome-message">Welcome, fellow explorer 🌎.</span>
 
@@ -44,17 +49,22 @@ I am a Geological Engineering graduate, trained in logic and system complication
     Leveraging the strong HTTP client <span class="highlight">Axios</span>, I apply UI/UX principles to guarantee a superior user experience.
 
 Whether mapping geological faults or debugging the same: uncovering structure in every project. I am ready to begin.
-Type 'help' for available commands.
+
+<span class="highlight">Type 'catch' to see all available commands.</span>
 </pre>
             <div class="prompt-line">
                 <span class="prompt">/user/saifullanwar:~$</span> 
-                <span id="current-command"></span>
-                <span class="cursor">_</span>
+                <span id="current-command" class="typing-cursor"></span>
             </div>
         </div>
 
         <input type="text" id="terminal-input" autofocus>
     </div>
+
+    <audio id="background-music" loop autoplay muted>
+        <source src="audio/Aylex - Building the Future (freetouse.com).mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
 
     <script src="script.js"></script>
 </body>

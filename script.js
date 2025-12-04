@@ -1,9 +1,62 @@
-// --- LOGIKA TOGGLE MODE (Dark/Light) ---
+// --- LOGIKA AUDIO DAN TOGGLE MODE ---
 let currentModeIndex = 0; 
 const modes = ['dark-mode', 'light-mode'];
 const body = document.body;
 body.classList.add(modes[currentModeIndex]);
 
+const music = document.getElementById('background-music');
+const musicToggle = document.getElementById('music-toggle');
+
+let hasAudioStarted = false;
+
+document.addEventListener('DOMContentLoaded', () => {
+    music.volume = 0.3;
+    music.play().then(() => {
+        hasAudioStarted = true;
+    }).catch(error => {
+        console.log("Autoplay initial attempt failed. Waiting for user interaction.");
+    });
+});
+
+document.body.addEventListener('click', function attemptPlay() {
+    if (!hasAudioStarted) {
+        music.play().then(() => {
+            hasAudioStarted = true;
+            document.body.removeEventListener('click', attemptPlay);
+        }).catch(error => {
+            // Biarkan event listener tetap ada.
+        });
+    }
+});
+
+musicToggle.addEventListener('click', (event) => {
+    event.stopPropagation(); 
+    if (!hasAudioStarted) {
+        music.play().then(() => {
+            hasAudioStarted = true;
+            toggleMuteStatus();
+        }).catch(() => {
+            toggleMuteStatus();
+        });
+    } else {
+        toggleMuteStatus();
+    }
+});
+
+function toggleMuteStatus() {
+    if (music.muted) {
+        music.muted = false;
+        musicToggle.textContent = '🔊';
+        musicToggle.title = 'Music On';
+    } else {
+        music.muted = true;
+        musicToggle.textContent = '🔈';
+        musicToggle.title = 'Music Off';
+    }
+}
+
+
+// LOGIKA TOGGLE MODE
 function toggleMode() {
     body.classList.remove(modes[currentModeIndex]);
     currentModeIndex = (currentModeIndex + 1) % modes.length;
@@ -14,24 +67,27 @@ function toggleMode() {
 // --- LOGIKA TERMINAL INTERAKTIF ---
 const output = document.getElementById('terminal-output');
 const inputField = document.getElementById('terminal-input');
+
 let currentCommandSpan = document.getElementById('current-command'); 
 const promptSymbol = '/user/saifullanwar:~$';
-
 inputField.focus();
 
-// Daftar perintah yang valid
+const availableCommands = "Available commands: clear, email, whatsapp, linkedin.";
+
 const commands = {
-    'help': "Available commands: help, clear, whoami",
-    'whoami': 'I am Saiful Anwar, a Geological Engineering graduate and a dedicated full-stack developer.',
     'clear': '', 
+    'catch': availableCommands,
+    'linkedin': 'Connect with me on LinkedIn: <a href="https://www.linkedin.com/in/saifullanwar" target="_blank" class="highlight">www.linkedin.com/in/saifullanwar</a>',
+    'email': 'Send an email to: <a href="mailto:saiful.bks@gmail.com" class="highlight">saiful.bks@gmail.com</a>',
+    'whatsapp': 'Chat with me: <a href="http://wa.me/628988185285" target="_blank" class="highlight">wa.me/628988185285</a>', 
 };
 
-// Menampilkan input di layar
 inputField.addEventListener('input', (e) => {
-    currentCommandSpan.textContent = e.target.value;
+    if (currentCommandSpan) {
+        currentCommandSpan.textContent = e.target.value;
+    }
 });
 
-// Memproses saat tombol ENTER ditekan
 inputField.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
         const command = inputField.value.trim().toLowerCase();
@@ -39,67 +95,56 @@ inputField.addEventListener('keydown', (e) => {
         inputField.value = ''; 
         e.preventDefault(); 
     }
+    document.getElementById('terminal-input').focus(); 
 });
 
 function handleCommand(command) {
     let outputText = '';
     
-    // 1. Gantikan baris prompt lama dengan perintah yang sudah selesai
-    const oldPromptLine = currentCommandSpan.closest('.prompt-line');
-    if (oldPromptLine) {
-        oldPromptLine.querySelector('.cursor').style.display = 'none'; 
-        currentCommandSpan.removeAttribute('id'); 
+    // 1. NONAKTIFKAN KURSOR DI BARIS LAMA
+    if (currentCommandSpan) {
+        currentCommandSpan.classList.remove('typing-cursor'); 
+        currentCommandSpan.removeAttribute('id');
     }
 
     // 2. Tentukan output
     if (command === 'clear') {
-        output.innerHTML = ''; 
-        // Konten statis yang dimasukkan kembali setelah clear (disalin dari index.html)
-        output.innerHTML = `
-            <pre class="static-content">
-/Last login: 12/3/2025, 8:30:22 PM WIB on ttys002
-
-<span class="welcome-message">Welcome, fellow explorer 🌎.</span>
-
-From analyzing the deep layers of the Earth to architecting the full stack of the digital realm, my career trajectory is defined by a singular passion: <span class="highlight">complex problem-solving</span>. I am a Full-Stack developer trained in data interpretation—skills that accelerate my transition. I am actively executing a career switch, embracing the challenge of building the most robust development.
-
-I am a Geological Engineering graduate, trained in logic and system complications. I embrace the task of building intuitive, efficient, and well-designed applications from the data layer to the user interface.
-
-<span class="section-title">MY DIGITAL CORE STACK:</span>
-* <span class="tech-category">Backend Foundation:</span> Mastery in <span class="highlight">Python</span>, <span class="highlight">Node.js</span>, and <span class="highlight">PHP</span>. Expertise in designing resilient <span class="highlight">REST API</span> architectures using the <span class="highlight">Express.js</span> framework. I integrate <span class="highlight">Prisma ORM</span> for effiable and scalable database access and data integrity using <span class="highlight">MySQL</span>.
-
-<span class="section-title">FRONTEND MASTERY:</span>
-* <span class="tech-category">State & System Layer:</span> Mastery of <span class="tech-category">State Management</span> for efficient data handling in <span class="highlight">React</span>. Expertise with <span class="highlight">JavaScript</span> and analyzing APIs for seeking server-side flaws using <span class="highlight">Vite</span>. Leveraging the strong HTTP client <span class="highlight">Axios</span>, I apply UI/UX principles to guarantee a superior user experience.
-
-Whether mapping geological faults or debugging the same: uncovering structure in every project. I am ready to begin.
-Type 'help' for available commands.
-</pre>`;
+        while (output.children.length > 1) {
+            output.removeChild(output.lastChild);
+        }
         
     } else if (commands[command]) {
         outputText = commands[command];
     } else {
-        outputText = `command not found: ${command}`;
+        outputText = `command not found: ${command}. Try 'catch' or 'clear'`;
     }
     
     // 3. Tambahkan output (kecuali clear)
     if (command !== 'clear') {
         const outputDiv = document.createElement('pre');
         outputDiv.classList.add('command-output');
-        outputDiv.innerHTML = outputText;
+        outputDiv.innerHTML = outputText; 
         output.appendChild(outputDiv);
     }
     
     // 4. Tambahkan baris prompt baru di akhir
-    output.appendChild(createPromptLine());
+    const newPromptLine = createPromptLine();
+    output.appendChild(newPromptLine);
 
-    output.scrollTop = output.scrollHeight;
+    // 5. LOGIKA AUTO-SCROLL YANG DIREVISI (Lebih Andal)
+    // Gunakan scrollIntoView() pada baris prompt yang baru dibuat
+    newPromptLine.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    
+    inputField.focus(); 
 }
 
 // Fungsi untuk membuat baris prompt baru
 function createPromptLine() {
     const newLine = document.createElement('div');
     newLine.classList.add('prompt-line');
-    newLine.innerHTML = `<span class="prompt">${promptSymbol}</span> <span id="new-current-command"></span><span class="cursor">_</span>`;
+    
+    // Kursor (via CSS ::after) akan otomatis mengikuti teks
+    newLine.innerHTML = `<span class="prompt">${promptSymbol}</span> <span id="new-current-command" class="typing-cursor"></span>`; 
     
     currentCommandSpan = newLine.querySelector('#new-current-command');
     currentCommandSpan.id = 'current-command'; 
