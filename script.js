@@ -83,7 +83,7 @@ const commands = {
 
 
 // ==========================================================
-// PERBAIKAN SCROLL MOBILE V5: SCROLL HANYA DENGAN JAVASCRIPT
+// PERBAIKAN SCROLL MOBILE V6: PENGATURAN ULANG WINDOW SCROLL
 // ==========================================================
 
 // 1. Memaksa scroll di setiap input (setiap huruf diketik)
@@ -91,20 +91,28 @@ inputField.addEventListener('input', (e) => {
     if (currentCommandSpan) {
         currentCommandSpan.textContent = e.target.value;
     }
-    // Tambahkan pemaksaan scroll di setiap ketikan untuk melawan auto-scroll browser mobile
+    // Pemaksaan scroll ke bawah (ini yang melawan auto-scroll)
     output.scrollTop = output.scrollHeight; 
 });
 
 // 2. Mengubah body click listener untuk memfokuskan input dan memaksa scroll
 document.body.addEventListener('click', function() {
+    // Di Mobile, atur ulang scroll window ke atas sebelum fokus
+    if (window.innerWidth <= 768) {
+        window.scrollTo(0, 0); 
+    }
+    
     inputField.focus();
-    // Tambahkan pemaksaan scroll di setiap klik
     output.scrollTop = output.scrollHeight;
 });
 
 // 3. Mengatasi fokus/keyboard yang memicu scroll tak terduga
 inputField.addEventListener('focus', function(e) {
-    // Selalu pastikan terminal berada di bagian paling bawah
+    // Di Mobile, atur ulang scroll window ke atas sebelum fokus
+    if (window.innerWidth <= 768) {
+        window.scrollTo(0, 0); 
+    }
+    
     output.scrollTop = output.scrollHeight;
     
     // Gulir kembali setelah jeda singkat (mengantisipasi munculnya keyboard)

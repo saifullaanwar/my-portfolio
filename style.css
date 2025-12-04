@@ -7,7 +7,7 @@ body {
     justify-content: center;
     align-items: center;
     
-    /* === FIX: FULL HEIGHT DESKTOP (Mentok Atas-Bawah) === */
+    /* FIX: FULL HEIGHT DESKTOP (Mentok Atas-Bawah) */
     height: 100vh; 
     min-height: 100vh;
     
@@ -15,8 +15,6 @@ body {
     font-family: 'Fira Code', monospace; 
     font-size: 15px;
     transition: background-color 0.3s; 
-    
-    /* Fix Mobile Scroll */
     width: 100%;
 }
 
@@ -166,7 +164,7 @@ body {
 .light-mode .control-button { color: #333333; } 
 
 
-/* === ESTETIKA: CUSTOM SCROLLBAR (Webkit) === */
+/* === ESTETIKA: CUSTOM SCROLLBAR (Webkit) untuk TERMINAL === */
 .terminal-content::-webkit-scrollbar {
     width: 8px;
 }
@@ -182,4 +180,16 @@ body {
 
 .terminal-content::-webkit-scrollbar-thumb:hover {
     background: #bd93f9; 
+}
+
+/* === PERBAIKAN SCROLL MOBILE: Menyembunyikan Scrollbar BODY === */
+/* Target Webkit Browsers (Chrome, Safari) */
+@media (max-width: 768px) {
+    body::-webkit-scrollbar {
+        display: none; /* Sembunyikan scrollbar body di mobile */
+    }
+    body {
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+    }
 }
